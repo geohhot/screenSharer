@@ -10,4 +10,4 @@ Steps of taking screenshot
 2. Another part of it starts uploading file to imgur
 3. Finally script part adds link to clipboard, and shows notifications about what is happening.
 
-![Test screen shot](http://i.imgur.com/zrYLtxP.png)
+![Test screen shot](http://i.imgur.com/sNLJkT8.png)
