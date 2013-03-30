@@ -76,7 +76,7 @@ class uploadImage {
 				if (args.length > 1) {
 					if (args[1].equals("link")) {
 						// print link
-						System.out.println("http://i.imgur.com/"+id+".png");
+						System.out.println("http://imgur.com/"+id);
 						System.out.flush();
 					}
 					else if (args[1].equals("id"))  {
@@ -84,7 +84,7 @@ class uploadImage {
 						System.out.flush();
 					}
 				} else {
-					System.out.println("http://i.imgur.com/"+id+".png");
+					System.out.println("http://imgur.com/"+id);
 					System.out.flush();
 				}
 

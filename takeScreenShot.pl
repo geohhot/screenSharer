@@ -24,7 +24,7 @@ $pid = `pidof notify-osd`;
 
 if ( $ok eq "ok" ) {
 	# show notification about uploading
-	$command = 'notify-send "Uploading to imgur" -i ".$PWD."/icon/loading.gif';
+	$command = 'notify-send "Uploading to imgur" -i '.$PWD.'/icon/loading.gif';
 	`$command`;
 
 	# upload picture
@@ -39,7 +39,7 @@ if ( $ok eq "ok" ) {
 	if ($id eq "-1") {
 		`notify-send "Failed somewhere" -i $/icon/fail.png`;
 	} else {
-		$link = "http://i.imgur.com/$id.png";
+		$link = "http://imgur.com/".$id;
 		#print "\n";
 		`notify-send "Done" "Link is: ".$link." "`;
 
