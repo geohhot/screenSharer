@@ -16,16 +16,9 @@ class uploadImage {
 	private static final String IMGUR_POST_URI = "https://api.imgur.com/3/upload";
 	private static final String IMGUR_CLIENT_ID = "91d979dc414be74";
 
-	public static void main(String[] args) {
+	public static String uploadImage(String file, boolean link) {
 		
 		try {
-
-			if (args.length == 0 ) {
-				System.out.println("-1");
-				System.out.flush();
-				System.exit(0);
-			}
-			String file = args[0];
 
 			//System.out.println("Reading image...");
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -73,19 +66,12 @@ class uploadImage {
 					}
 				}
 
-				if (args.length > 1) {
-					if (args[1].equals("link")) {
-						// print link
-						System.out.println("http://imgur.com/"+id);
-						System.out.flush();
-					}
-					else if (args[1].equals("id"))  {
-						System.out.println(id);
-						System.out.flush();
-					}
-				} else {
-					System.out.println("http://imgur.com/"+id);
-					System.out.flush();
+				if (link) {
+					// print link
+					return "http://imgur.com/"+id;
+				}
+				else {
+					return id;
 				}
 
 			}
@@ -94,10 +80,14 @@ class uploadImage {
 			}
 	    }
 	    catch (Exception e) {
-	    	System.err.println("-1");
-	    	System.out.flush();
+	    	return "-1";
 	    	//e.printStackTrace();
 	    }
+	    return "-1";
+	}
+
+	public uploadImage() {
+
 	}
 
 }
