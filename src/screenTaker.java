@@ -23,7 +23,7 @@ class screenTaker {
 
 	public static String uploadToImgur(String fileName, boolean link) throws ImgurException {
 
-		uploadImage ui = new uploadImage();
+		imageUploader ui = new imageUploader();
 		String id = ui.uploadImage(fileName, link);
 		if (id.equals("-1")) {
 			// error
@@ -43,20 +43,26 @@ class screenTaker {
 			takeScreenShot(fileName);
 			try {
 				String id = uploadToImgur(fileName, false);
-				System.out.println("ID: "+id);
+				System.out.println("Imgur ID: "+id);
+				System.out.println("Imgur link: http://imgur.com/"+id);
 			}
 			catch (ImgurException e) {
 				// show notification about exception
+				System.err.println("fatal: errors uploading to Imgur(ImgurException)");
 			}
 		}
 		catch (ScreenShotException e) {
 			// show notification about exception
+			System.err.println("fatal: errors taking screen shot(ScreenShotException)");
 		}
 		catch (AWTException e) {
 			// show notification about exception
+			System.err.println("fatal: errors taking screen shot (AWTException)");
+
 		}
 		catch (IOException e) {
 			// show notification about exception
+			System.err.println("fatal: errors writing to file (IOException)");
 		}
 
 	}
