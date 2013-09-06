@@ -1,56 +1,34 @@
-#!/usr/bin/perl
+#!/bin/bash
+notify-send "Taking screenshot" -i applets-screenshooter
 
-# take screen shot
-`notify-send "Taking screenshot" -i applets-screenshooter`;
+sleep 1
 
-`sleep 1`;
+kill `pidof notify-osd`
 
-$pid = `pidof notify-osd`;
-`kill $pid`;
+echo "PWD = `pwd`"
 
-#$PWD = `pwd`;
+result=`java screenShot`
 
-print "PWD = $PWD";
+result=`echo $result | tr -d '\r\n'` # strip newlines
+echo ${result} # this might be helpful
+pwd=`pwd`
+if [ "${result}" = "ok" ]; then
+	command=`notify-send "Uploading to imgur" -i '${pwd}/icon/loading.gif'`
 
-`cd $PWD`;
+	id=`java -classpath lib/commons-codec-1.7.jar:lib/json-simple-1.1.1.jar:. uploadImage "tempScreen.png" id`
 
-$ok = `java screenShot`;
-chop $ok;
+	id=`echo ${id} | tr -d '\r\n'`
 
-$pid = `pidof notify-osd`;
-`kill $pid`;
+	kill `pidof notify-osd`
 
-#print "OK = $ok\n";
-
-if ( $ok eq "ok" ) {
-	# show notification about uploading
-	$command = 'notify-send "Uploading to imgur" -i '.$PWD.'/icon/loading.gif';
-	`$command`;
-
-	# upload picture
-	$id = `java -classpath lib/commons-codec-1.7.jar:lib/json-simple-1.1.1.jar:. uploadImage "tempScreen.png" id`;
-
-	# print "$id\n";
-	chop $id;
-
-	$pid = `pidof notify-osd`;
-	`kill $pid`;
-
-	if ($id eq "-1") {
-		`notify-send "Failed somewhere" -i $/icon/fail.png`;
-	} else {
-		$link = "http://imgur.com/".$id;
-		#print "\n";
-		`notify-send "Done" "Link is: ".$link." "`;
-
-		# set link to clipboard
-		`nohup echo "$link" | xclip -sel clip &`;
-	}
-
-	# remove temp file
-}
-else {
-	# show notification about fail
-	print "Fail :(\n";
-	`notify-send "Failed somewhere" -i $pwd/icon/fail.png`;
-}
+	if [ "${id}" = "-1" ]; then
+		notify-send "Failed somewhere" -i "`pwd`/icon/fail.png"
+	else
+		link="http://imgur.com/${id}" # no https? disappointed
+		notify-send "Done" "Link is: ${link} "
+		nohup echo ${link} | xclip -sel clip &
+	fi
+else
+	echo "Fail :("
+	notify-send "Failed somewhere" -i "`pwd`/icon/fail.png"
+fi
